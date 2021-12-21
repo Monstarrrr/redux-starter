@@ -80,7 +80,8 @@ store.dispatch({
 })
 // Middleware API
 store.dispatch(actions.apiCallBegan({
-    url: '/bugs',
+    url: '/products',
+    method: 'get',
 }))
 
 // Unsubscribe

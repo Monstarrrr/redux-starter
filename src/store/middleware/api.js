@@ -8,18 +8,17 @@ const api = ({ dispatch }) => next => async action => {
     
     next(action);
     
-    const { url, method, data } = action.payload
+    const { url, method } = action.payload
     
     try {
         const response = await axios.request({
             baseURL: 'http://localhost:3001/api',
-            url, // /bugs
-            method,
-            data
+            url,
+            method
         });
         dispatch(actions.apiCallSuccess(response.data));
     } catch(error) {
-        dispatch(actions.apiCallFailed(error))
+        dispatch(actions.apiCallFailed("error"))
     }
 };
 
