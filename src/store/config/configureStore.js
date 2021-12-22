@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import reducer from './reducer';
-import toast from "./middleware/toast";
-import api from './middleware/api';
+import toast from "../middleware/toast";
+import api from '../middleware/api';
 
 // Without middleware
 // export default function() {

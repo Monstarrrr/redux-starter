@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 let lastId = 0;
 
+// createSlice: mutable code is treated as immutable
 const slice = createSlice({
     name: 'projects',
     initialState: [],

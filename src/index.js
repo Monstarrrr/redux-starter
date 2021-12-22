@@ -1,24 +1,23 @@
-import { compose, pipe } from 'lodash/fp';
+import { pipe } from 'lodash/fp';
 import { produce } from 'immer';
 // Redux
-import configureStore from './store/configureStore';
+import configureStore from './store/config/configureStore';
 import { 
     addBug,
     assignBugToUser,
     resolveBug,
     getUnresolvedBugsNormal,
     getUnresolvedBugsMemoized
-} from './store/bugs';
-import { projectAdded, projectRemoved } from './store/projects';
+} from './store/reducers/bugs';
+import { projectAdded, projectRemoved } from './store/reducers/projects';
 import { 
     addPerson, 
     addCity, 
     addPet, 
     removeCityPeople,
     setPetAge
-} from './store/people';
-import api from './store/middleware/api';
-import * as actions from './store/api';
+} from './store/reducers/people';
+import * as actions from './store/config/api';
 
 
 /**
@@ -81,7 +80,8 @@ store.dispatch({
 // Middleware API
 store.dispatch(actions.apiCallBegan({
     url: '/products',
-    method: 'get',
+    getProductsSuccess: 'productsReceived',
+    getProductsFailed: 'api call failed'
 }))
 
 // Unsubscribe

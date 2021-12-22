@@ -1,6 +1,6 @@
 const toast = store => next => action => {
     if(action.type === 'Error') {
-        console.log("Toastify: ", action.payload.message)
+        console.log("This is a toast error: ", action.payload.message)
     }
     else {
         next(action);

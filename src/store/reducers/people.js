@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+// createSlice: mutable code is treated as immutable
 export const slice = createSlice({
     name: "people",
     initialState: [],
