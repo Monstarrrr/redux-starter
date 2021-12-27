@@ -1,29 +1,43 @@
 import axios from 'axios';
-import * as actions from '../config/api';
+import { 
+    apiCallBegan, 
+    apiCallSuccess, 
+    apiCallError } from '../reducers/products';
 
 const api = ({ dispatch }) => next => async action => {
-    if (action.type !== actions.apiCallBegan.type) {
+    if (action.type !== apiCallBegan.type) {
         return next(action);
     }
     
+    const { 
+        url, 
+        productsRequested,
+        productsReceived,
+        productsNotReceived, 
+    } = action.payload
+    
+    if(productsRequested) dispatch({ type: productsRequested })
+    
     next(action);
     
-    const { url, getProductsSuccess, getProductsFailed } = action.payload
-    
     try {
-        const response = await axios.request({
+        const {data: {products}} = await axios.request({
             baseURL: 'http://localhost:3001/api',
             url,
         });
-        // Specific
-        dispatch({ type: getProductsSuccess, payload: response.data })
-        // General
-        // dispatch(actions.apiCallSuccess(response.data));
+        // apiCallSuccess
+        dispatch(apiCallSuccess(products[0].tags));
+        dispatch({
+            type: productsReceived,
+            payload: products[0].tags
+        })
     } catch(error) {
-        // Specific
-        dispatch({ type: getProductsFailed, payload: error.message })
-        // General
-        // dispatch(actions.apiCallFailed(error.message))
+        // apiCallFailed
+        dispatch({ 
+            type: productsNotReceived, 
+            payload: error.message 
+        })
+        dispatch(apiCallError(error.message))
     }
 };
 

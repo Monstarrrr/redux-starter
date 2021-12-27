@@ -7,18 +7,15 @@ import {
     assignBugToUser,
     resolveBug,
     getUnresolvedBugsNormal,
-    getUnresolvedBugsMemoized
-} from './store/reducers/bugs';
+    getUnresolvedBugsMemoized } from './store/reducers/bugs';
 import { projectAdded, projectRemoved } from './store/reducers/projects';
 import { 
     addPerson, 
     addCity, 
     addPet, 
     removeCityPeople,
-    setPetAge
-} from './store/reducers/people';
-import * as actions from './store/config/api';
-
+    setPetAge } from './store/reducers/people';
+import { loadProducts } from './store/reducers/products';
 
 /**
  * Redux
@@ -78,11 +75,8 @@ store.dispatch({
     }
 })
 // Middleware API
-store.dispatch(actions.apiCallBegan({
-    url: '/products',
-    getProductsSuccess: 'productsReceived',
-    getProductsFailed: 'api call failed'
-}))
+store.dispatch(loadProducts())
+// setTimeout(() => store.dispatch(loadProducts()), 2000)
 
 // Unsubscribe
 const unsubscribe = store.subscribe(() => {
