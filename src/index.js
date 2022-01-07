@@ -78,7 +78,7 @@ store.dispatch({
 store.dispatch(loadProducts())
 setTimeout(() => store.dispatch(loadProducts()), 2000)
 
-store.dispatch(addProduct({ description: "YOAAAAAAN" }))
+store.dispatch(addProduct({ description: "YOAAAAAN" }))
 console.log(addProduct({ description: "hi"}))
 
 // Unsubscribe
