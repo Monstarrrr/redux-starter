@@ -64,10 +64,15 @@ See section about [deployment](https://facebook.github.io/create-react-app/docs/
    - useParams
 
 2. Redux
-   - 
-   - 
+   - entities.js | reducer.js | configureStore.js | caching.js
+   - somethingA.js | somethingB.js | ...
+   - middlewares (Normal or API)
 
-3. Axios
+3. Unit testing (optional)
+   - babel.config.json
+   - -.spec.js
+   - 
+4. Axios
    - Add baseURL
    - Get JWT accessToken & store it locally w/ localStorage.setItem
    - Login/Signup
@@ -77,18 +82,21 @@ See section about [deployment](https://facebook.github.io/create-react-app/docs/
 
 ### Dependencies
 
-[Required]
+#### Required
 - react-router-dom (v6)
 - @reduxjs/toolkit (unless "create-react-app --template redux" was used)
 - redux-devtools-extension
 - reselect (for memoization)
 - redux-persist
+- moment
 
-[Optional]
-- webpack --save-dev
+#### Optional (--save-dev)
+- webpack
 
 ### Extensions
 
+- Tabnine AI autocomplete
+<!-- "editor.acceptSuggestionOnEnter": "off" -->
 - GitLens
 - Emmet
 - Implicit indent

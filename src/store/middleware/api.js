@@ -2,42 +2,46 @@ import axios from 'axios';
 import { 
     apiCallBegan, 
     apiCallSuccess, 
-    apiCallError } from '../reducers/products';
+    apiCallError 
+} from '../reducers/products';
 
 const api = ({ dispatch }) => next => async action => {
     if (action.type !== apiCallBegan.type) {
         return next(action);
     }
-    
     const { 
-        url, 
-        productsRequested,
-        productsReceived,
-        productsNotReceived, 
+        url,
+        method,
+        data,
+        onStart,
+        onSuccess,
+        onError, 
     } = action.payload
     
-    if(productsRequested) dispatch({ type: productsRequested })
+    if(onStart) dispatch({ type: onStart })
     
     next(action);
     
     try {
-        const {data: {products}} = await axios.request({
+        const response = await axios.request({
             baseURL: 'http://localhost:3001/api',
             url,
+            method,
+            data
         });
         // apiCallSuccess
-        dispatch(apiCallSuccess(products[0].tags));
+        dispatch(apiCallSuccess(response.data));
         dispatch({
-            type: productsReceived,
-            payload: products[0].tags
+            type: onSuccess,
+            payload: response.data
         })
     } catch(error) {
         // apiCallFailed
+        dispatch(apiCallError(error.message))
         dispatch({ 
-            type: productsNotReceived, 
+            type: onError, 
             payload: error.message 
         })
-        dispatch(apiCallError(error.message))
     }
 };
 

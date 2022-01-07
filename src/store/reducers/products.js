@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { createAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
+import { cacheExpired } from '../config/caching';
 
 /**
  * Reducers
@@ -20,24 +21,20 @@ const slice = createSlice({
             products.loading = true;
         },
         productsReceived: (products, action) => {
-            products.list = action.payload;
+            products.list = action.payload.data;
             products.loading = false;
             products.lastFetch = Date.now();
         },
         productsNotReceived: (products, action) => {
             products.loading = false;
         },
-        addProduct: (products, action) => {
-            products.list.push({
-                id: ++lastId,
-                description: action.payload.description,
-                resolved: false
-            })
+        productAdded: (products, action) => {
+            products.list.push(action.payload)
         },
     }
 })
 export const { 
-    addProduct, 
+    productAdded, 
     productsReceived,
     productsNotReceived,
     productsRequested,
@@ -53,14 +50,33 @@ export const apiCallBegan = createAction("api/CallBegan");
 export const apiCallSuccess = createAction("api/CallSuccess");
 export const apiCallError = createAction("api/CallError");
 
-const url = "/products"
+const urlLoadProducts = "/products"
+const urlAddProduct = "/auth/data"
 
-export const loadProducts = () => apiCallBegan({
-    url,
-    productsRequested: productsRequested.type,
-    productsReceived: productsReceived.type,
-    productsNotReceived: productsNotReceived.type,
-})
+export const loadProducts = () => (dispatch, getState) => {
+    const { lastFetch } = getState().entities.products;
+    
+    // Caching
+    if(!cacheExpired(lastFetch)) return;
+    
+    dispatch(apiCallBegan({
+        url: urlLoadProducts,
+        method: "get",
+        onStart: productsRequested.type,
+        onSuccess: productsReceived.type,
+        onError: productsNotReceived.type,
+    }));
+};
+
+export const addProduct = product => dispatch => {
+    dispatch(apiCallBegan({
+        url: urlAddProduct,
+        method: "post",
+        data: product,
+        onSuccess: productAdded.type,
+        onError: productAdded.type,
+    }))
+}
 
 /**
  * Selectors

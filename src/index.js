@@ -15,7 +15,7 @@ import {
     addPet, 
     removeCityPeople,
     setPetAge } from './store/reducers/people';
-import { loadProducts } from './store/reducers/products';
+import { addProduct, loadProducts } from './store/reducers/products';
 
 /**
  * Redux
@@ -76,7 +76,10 @@ store.dispatch({
 })
 // Middleware API
 store.dispatch(loadProducts())
-// setTimeout(() => store.dispatch(loadProducts()), 2000)
+setTimeout(() => store.dispatch(loadProducts()), 2000)
+
+store.dispatch(addProduct({ description: "YOAAAAAAN" }))
+console.log(addProduct({ description: "hi"}))
 
 // Unsubscribe
 const unsubscribe = store.subscribe(() => {
